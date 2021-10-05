@@ -21,15 +21,23 @@ public class Basket {
         return Collections.unmodifiableList(items);
     }
 
+    public BigDecimal subtotal() {
+    	//apply discounts
+        return new TotalCalculator().subtotal();
+    }
+
+    
     public BigDecimal total() {
+    	//apply discounts
         return new TotalCalculator().calculate();
     }
 
-    private class TotalCalculator {
+    private class TotalCalculator extends DiscountCalculator {
         private final List<Item> items;
 
         TotalCalculator() {
             this.items = items();
+            super.applyDiscounts(items);
         }
 
         private BigDecimal subtotal() {
@@ -46,12 +54,14 @@ public class Basket {
          *  Think about how Basket could interact with something
          *  which provides that functionality.
          */
-        private BigDecimal discounts() {
-            return BigDecimal.ZERO;
-        }
+        
+        //use method in Discount Calculator
+//        private BigDecimal discounts() {
+//            return BigDecimal.ZERO;
+//        }
 
         private BigDecimal calculate() {
-            return subtotal().subtract(discounts());
+            return subtotal().subtract(super.discounts());
         }
     }
 }
