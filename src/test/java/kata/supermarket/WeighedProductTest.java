@@ -4,6 +4,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import kata.supermarket.Product.CATEGORY;
+
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
@@ -14,9 +16,11 @@ class WeighedProductTest {
     @ParameterizedTest
     @MethodSource
     void itemFromWeighedProductHasExpectedUnitPrice(String pricePerKilo, String weightInKilos, String expectedPrice) {
-        final WeighedProduct weighedProduct = new WeighedProduct(new BigDecimal(pricePerKilo));
+        final WeighedProduct weighedProduct = new WeighedProduct(new BigDecimal(pricePerKilo), "Pick&Mix", CATEGORY.Sweets);
         final Item weighedItem = weighedProduct.weighing(new BigDecimal(weightInKilos));
         assertEquals(new BigDecimal(expectedPrice), weighedItem.price());
+        assertEquals("Pick&Mix", weighedItem.productName());
+        assertEquals(CATEGORY.Sweets, weighedItem.productCategory());
     }
 
     static Stream<Arguments> itemFromWeighedProductHasExpectedUnitPrice() {
